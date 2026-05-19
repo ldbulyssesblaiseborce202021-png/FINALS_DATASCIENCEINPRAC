@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
+import os
 
 # ---------------------------------------------------------
 # Page Configurations & Styling
@@ -30,18 +31,18 @@ st.sidebar.title("MIAA Analytics")
 page = st.sidebar.radio("Navigate Workspace", ["Business Understanding", "Data Exploration (EDA)"])
 
 # ---------------------------------------------------------
-# Helper Function: Load & Process Data
+# Helper Function: Load & Process Data using Relative Paths
 # ---------------------------------------------------------
 @st.cache_data
 def load_data():
-    # Replace this path with your actual dataset path if deploying
-    file_path = 'PH_Airports_Arrivals_and_Departures.csv'
+    # 📁 REPLACED: Points to the local file path inside your cloned GitHub repository root
+    file_name = 'PH_Airports_Arrivals_and_Departures.csv'
     
-    # Simulating data fallback for testing/demonstration without real file
-    try:
-        df = pd.read_csv(file_path)
-    except FileNotFoundError:
-        # Generate artificial data mimicking the real structure for runtime safety
+    # Check if the file exists in the repository root directory
+    if os.path.exists(file_name):
+        df = pd.read_csv(file_name)
+    else:
+        # Fallback simulation data if the file is missing locally during testing
         date_range = pd.date_range(start="2018-01-01", end="2023-11-05", freq="H")
         df = pd.DataFrame({
             'firstSeen': date_range,
@@ -114,6 +115,12 @@ if page == "Business Understanding":
 elif page == "Data Exploration (EDA)":
     st.markdown('<div class="main-title">Data Understanding & Exploratory Analysis</div>', unsafe_allow_html=True)
     
+    # Inform the user if the app is currently running on actual repo data or fallback arrays
+    if os.path.exists('PH_Airports_Arrivals_and_Departures.csv'):
+        st.success("🔒 Successfully reading dataset file from repository environment directory.")
+    else:
+        st.warning("⚠️ CSV file not found in directory. Displaying sandbox simulated placeholder data.")
+
     # Metric Summary Row
     st.markdown("### **Key Dataset Metrics**")
     m1, m2, m3, m4 = st.columns(4)
@@ -159,5 +166,5 @@ elif page == "Data Exploration (EDA)":
         labels={'date_only': 'Timeline Date', 'total_flights': 'Total Volume Count'},
         color_discrete_sequence=['#1E3A8A']
     )
-    fig_line.update_xaxes(rangeslider_visible=True) # Adds interactive time zoom slider bar below plot
+    fig_line.update_xaxes(rangeslider_visible=True)
     st.plotly_chart(fig_line, use_container_width=True)
