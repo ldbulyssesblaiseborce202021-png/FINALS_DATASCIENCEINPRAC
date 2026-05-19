@@ -35,7 +35,7 @@ page = st.sidebar.radio("Navigate Workspace", ["Business Understanding", "Data E
 # ---------------------------------------------------------
 @st.cache_data
 def load_data():
-    # 📁 REPLACED: Points to the local file path inside your cloned GitHub repository root
+    # 📁 Points to the local zipped file path inside your cloned GitHub repository root
     file_name = 'PH_Airports_Arrivals_and_Departures.csv.zip'
     
     # Check if the file exists in the repository root directory
@@ -115,11 +115,11 @@ if page == "Business Understanding":
 elif page == "Data Exploration (EDA)":
     st.markdown('<div class="main-title">Data Understanding & Exploratory Analysis</div>', unsafe_allow_html=True)
     
-    # Inform the user if the app is currently running on actual repo data or fallback arrays
-    if os.path.exists('PH_Airports_Arrivals_and_Departures.csv'):
+    # 🛠️ FIXED: Now matching the exact zipped filename tracked above
+    if os.path.exists('PH_Airports_Arrivals_and_Departures.csv.zip'):
         st.success("🔒 Successfully reading dataset file from repository environment directory.")
     else:
-        st.warning("⚠️ CSV file not found in directory. Displaying sandbox simulated placeholder data.")
+        st.warning("⚠️ CSV archive file not found in directory. Displaying sandbox simulated placeholder data.")
 
     # Metric Summary Row
     st.markdown("### **Key Dataset Metrics**")
