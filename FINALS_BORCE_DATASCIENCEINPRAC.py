@@ -36,7 +36,7 @@ page = st.sidebar.radio("Navigate Workspace", ["Business Understanding", "Data E
 @st.cache_data
 def load_data():
     # 📁 REPLACED: Points to the local file path inside your cloned GitHub repository root
-    file_name = 'PH_Airports_Arrivals_and_Departures.csv'
+    file_name = 'PH_Airports_Arrivals_and_Departures.csv.zip'
     
     # Check if the file exists in the repository root directory
     if os.path.exists(file_name):
